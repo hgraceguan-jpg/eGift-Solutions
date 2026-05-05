@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vendor Comparison Report — Pluxee vs. Giftaway</title>
+<style>
+  /* ── Reset & Base ───────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #F0F4F8;
+    color: #1A2332;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── Page Wrapper ───────────────────────────────────────────── */
+  .page {
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── Report Header ──────────────────────────────────────────── */
+  .report-header {
+    background: linear-gradient(135deg, #0D2B5E 0%, #1A4FA0 60%, #1565C0 100%);
+    color: #fff;
+    border-radius: 14px 14px 0 0;
+    padding: 36px 40px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-header::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .report-header::after {
+    content: '';
+    position: absolute; bottom: -60px; right: 80px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .report-title { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; }
+  .report-subtitle { font-size: 15px; color: #A8C8F8; margin-top: 6px; }
+  .report-meta {
+    display: flex; gap: 24px; margin-top: 18px; flex-wrap: wrap;
+  }
+  .meta-pill {
+    background: rgba(255,255,255,0.13);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: #D0E8FF;
+  }
+
+  /* ── Section ────────────────────────────────────────────────── */
+  .section {
+    background: #fff;
+    margin-top: 2px;
+    padding: 28px 32px 20px;
+    border-left: 1px solid #DDE3EC;
+    border-right: 1px solid #DDE3EC;
+  }
+  .section:last-child {
+    border-radius: 0 0 14px 14px;
+    border-bottom: 1px solid #DDE3EC;
+    padding-bottom: 32px;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0D2B5E;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #E2E8F4;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .num {
+    background: #0D2B5E;
+    color: #fff;
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+
+  /* ── 3-Column Comparison Grid ───────────────────────────────── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr 1fr 1fr;
+    gap: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #D0D8E8;
+    margin-bottom: 4px;
+  }
+
+  /* Header Row */
+  .col-label-header {
+    background: #1A2E52;
+    padding: 14px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8EA8C8;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    display: flex; align-items: flex-end;
+  }
+  .col-header {
+    padding: 16px 18px;
+    text-align: center;
+    font-weight: 700;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px;
+    min-height: 80px;
+  }
+  .col-header.pluxee-phys {
+    background: linear-gradient(160deg, #00695C, #00897B);
+  }
+  .col-header.pluxee-digital {
+    background: linear-gradient(160deg, #0D47A1, #1565C0);
+  }
+  .col-header.giftaway {
+    background: linear-gradient(160deg, #BF360C, #E64A19);
+  }
+  .col-header .vendor-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .col-header .option-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .col-header .quote-ref {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 2px 9px;
+  }
+
+  /* Sub-header rows (section dividers inside table) */
+  .row-subhead .label-cell {
+    background: #1A2E52;
+    color: #8EC5FF;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 8px 16px;
+    display: flex; align-items: center;
+  }
+  .row-subhead .val-cell {
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.8);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .row-subhead .val-cell.phys  { background: #00695C; }
+  .row-subhead .val-cell.dig   { background: #0D47A1; }
+  .row-subhead .val-cell.gift  { background: #BF360C; }
+
+  /* Data rows */
+  .row-data {
+    display: contents;
+  }
+  .row-data:hover .label-cell,
+  .row-data:hover .val-cell { background-color: rgba(13,43,94,0.04) !important; }
+
+  .label-cell {
+    background: #F8FAFE;
+    padding: 11px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3A4D6B;
+    border-top: 1px solid #E8EDF5;
+    display: flex; align-items: center;
+  }
+  .val-cell {
+    background: #fff;
+    padding: 11px 16px;
+    font-size: 13px;
+    color: #1A2332;
+    border-top: 1px solid #E8EDF5;
+    display: flex; align-items: center;
+    white-space: pre-line;
+  }
+  .val-cell.phys-bg  { background: #E8F5F3; }
+  .val-cell.dig-bg   { background: #EAF0FB; }
+  .val-cell.gift-bg  { background: #FFF3EE; }
+
+  /* ── Total Row ──────────────────────────────────────────────── */
+  .row-total .label-cell {
+    background: #1A2E52;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-top: 2px solid #0D2050;
+  }
+  .total-amount {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 14px 16px;
+    border-top: 2px solid rgba(255,255,255,0.2);
+  }
+  .total-amount .amount-label {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 3px;
+  }
+  .total-amount.phys  { background: #00695C; }
+  .total-amount.dig   { background: #0D47A1; }
+  .total-amount.gift  { background: #BF360C; }
+
+  /* ── Verdict Row ────────────────────────────────────────────── */
+  .verdict-cell {
+    padding: 10px 16px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 3px;
+    border-top: 1px solid #E8EDF5;
+  }
+  .verdict-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .verdict-best   { background: #E8F5E9; color: #1B5E20; border: 1px solid #A5D6A7; }
+  .verdict-mid    { background: #FFF3E0; color: #E65100; border: 1px solid #FFCC80; }
+  .verdict-costly { background: #FFEBEE; color: #B71C1C; border: 1px solid #EF9A9A; }
+  .verdict-label  { background: #F5F7FA; padding: 10px 16px; display: flex; align-items: center; font-size: 12px; font-weight: 700; color: #3A4D6B; border-top: 1px solid #E8EDF5; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  /* ── Badges / Tags ──────────────────────────────────────────── */
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .tag-green  { background: #E8F5E9; color: #2E7D32; }
+  .tag-amber  { background: #FFF8E1; color: #E65100; }
+  .tag-red    { background: #FFEBEE; color: #B71C1C; }
+  .tag-blue   { background: #E3F2FD; color: #0D47A1; }
+  .tag-teal   { background: #E0F2F1; color: #00695C; }
+
+  /* ── Insights Cards ─────────────────────────────────────────── */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+    margin-top: 4px;
+  }
+  .insight-card {
+    border-radius: 10px;
+    padding: 16px 18px;
+    border: 1px solid #E0E6F0;
+    background: #FAFBFF;
+  }
+  .insight-card .ic-head {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: 13px; color: #1A2E52;
+    margin-bottom: 8px;
+  }
+  .insight-card .ic-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .insight-card p { font-size: 13px; color: #4A5878; line-height: 1.55; }
+
+  /* ── Cost Banner ────────────────────────────────────────────── */
+  .cost-banner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .cost-card {
+    border-radius: 12px;
+    padding: 20px 18px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cost-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  }
+  .cost-card.phys  { background: #E8F5F3; border: 1px solid #B2DFDB; }
+  .cost-card.phys::before { background: #00695C; }
+  .cost-card.dig   { background: #EAF0FB; border: 1px solid #BBDEFB; }
+  .cost-card.dig::before  { background: #0D47A1; }
+  .cost-card.gift  { background: #FFF3EE; border: 1px solid #FFCCBC; }
+  .cost-card.gift::before { background: #E64A19; }
+  .cost-card .cc-vendor { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
+  .cost-card.phys .cc-vendor { color: #00695C; }
+  .cost-card.dig  .cc-vendor { color: #0D47A1; }
+  .cost-card.gift .cc-vendor { color: #E64A19; }
+  .cost-card .cc-option { font-size: 13px; color: #3A4D6B; margin-bottom: 10px; font-weight: 600; }
+  .cost-card .cc-amount { font-size: 26px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .cost-card.phys .cc-amount { color: #00695C; }
+  .cost-card.dig  .cc-amount { color: #0D47A1; }
+  .cost-card.gift .cc-amount { color: #E64A19; }
+  .cost-card .cc-fees { font-size: 12px; color: #7A8CAA; margin-top: 6px; }
+  .cost-card .cc-delta { display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; }
+  .delta-best   { background: #E8F5E9; color: #1B5E20; }
+  .delta-mid    { background: #FFF3E0; color: #E65100; }
+  .delta-costly { background: #FFEBEE; color: #B71C1C; }
+
+  /* ── Disclaimer ─────────────────────────────────────────────── */
+  .disclaimer {
+    background: #F0F4FA;
+    border: 1px solid #D0D8EC;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #5A6B88;
+    line-height: 1.6;
+  }
+  .disclaimer strong { color: #3A4D6B; }
+
+  /* ── Print ──────────────────────────────────────────────────── */
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; padding: 0 10px; max-width: 100%; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ REPORT HEADER ══════════════════════════════════════════ -->
+  <div class="report-header">
+    <div class="report-title">Vendor Comparison Report</div>
+    <div class="report-subtitle">eGift Solutions — Pluxee (Physical &amp; Digital) vs. Giftaway (eGift Credits)</div>
+    <div class="report-meta">
+      <span class="meta-pill">📅 May 5, 2026</span>
+      <span class="meta-pill">🏢 Infosoft Consulting Corporation</span>
+      <span class="meta-pill">👤 Prepared by: HR Department</span>
+      <span class="meta-pill">🎁 Gift Value: PHP 30,000</span>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 1: COST SUMMARY BANNER ════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span> Cost Summary at a Glance</div>
+
+    <div class="cost-banner">
+      <div class="cost-card phys">
+        <div class="cc-vendor">🟢 Pluxee</div>
+        <div class="cc-option">Physical Gift Cards</div>
+        <div class="cc-amount">PHP 32,480</div>
+        <div class="cc-fees">Total fees (inc. VAT): PHP 2,480.00</div>
+        <div class="cc-delta delta-best">✔ Lowest Cost — saves PHP 880 vs. Giftaway</div>
+      </div>
+      <div class="cost-card dig">
+        <div class="cc-vendor">🔵 Pluxee</div>
+        <div class="cc-option">Digital eGift Credits</div>
+        <div class="cc-amount">PHP 40,640</div>
+        <div class="cc-fees">Total fees (inc. VAT): PHP 10,640.00</div>
+        <div class="cc-delta delta-mid">PHP 8,000 portal fee is one-time · accessible thereafter</div>
+      </div>
+      <div class="cost-card gift">
+        <div class="cc-vendor">🔴 Giftaway</div>
+        <div class="cc-option">eGift Credits (Digital)</div>
+        <div class="cc-amount">PHP 33,360</div>
+        <div class="cc-fees">Total fees (inc. VAT): PHP 3,360.00</div>
+        <div class="cc-delta delta-mid">✔ Best Digital Option — fully instant</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 2: VENDOR OVERVIEW ════════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="num">2</span> Vendor Overview</div>
+
+    <div class="compare-grid">
+      <!-- Column Headers -->
+      <div class="col-label-header">Category</div>
+      <div class="col-header pluxee-phys">
+        <span class="vendor-badge">Pluxee Philippines Inc.</span>
+        <span class="option-name">Physical Gift Cards</span>
+        <span class="quote-ref">Quotation No. 391040</span>
+      </div>
+      <div class="col-header pluxee-digital">
+        <span class="vendor-badge">Pluxee Philippines Inc.</span>
+        <span class="option-name">Digital eGift Credits</span>
+        <span class="quote-ref">Quotation No. 391044</span>
+      </div>
+      <div class="col-header giftaway">
+        <span class="vendor-badge">Giftaway, Inc.</span>
+        <span class="option-name">eGift Credits</span>
+        <span class="quote-ref">Quote No. QU-45853</span>
+      </div>
+
+      <!-- Data Rows -->
+      <div class="label-cell">Document Date</div>
+      <div class="val-cell phys-bg">May 5, 2026</div>
+      <div class="val-cell dig-bg">May 5, 2026</div>
+      <div class="val-cell gift-bg">May 5, 2026</div>
+
+      <div class="label-cell">Vendor Address</div>
+      <div class="val-cell phys-bg">Pluxee Philippines Incorporated</div>
+      <div class="val-cell dig-bg">Pluxee Philippines Incorporated</div>
+      <div class="val-cell gift-bg">12/F PNB Bldg., 6754 Ayala Ave, Makati</div>
+
+      <div class="label-cell">Account Manager</div>
+      <div class="val-cell phys-bg">Gian Franco Floro</div>
+      <div class="val-cell dig-bg">Gian Franco Floro</div>
+      <div class="val-cell gift-bg">Justin Hirang / Adrian Fernandez</div>
+
+      <div class="label-cell">Contact Email</div>
+      <div class="val-cell phys-bg">orderfulfillment.ph@pluxeegroup.com</div>
+      <div class="val-cell dig-bg">orderfulfillment.ph@pluxeegroup.com</div>
+      <div class="val-cell gift-bg">finance@giftaway.ph</div>
+
+      <div class="label-cell">Product Type</div>
+      <div class="val-cell phys-bg"><span class="tag tag-teal">Physical Cards</span></div>
+      <div class="val-cell dig-bg"><span class="tag tag-blue">Digital Credits</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-amber">Digital eGift</span></div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 3: PRICING BREAKDOWN ══════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="num">3</span> Pricing Breakdown</div>
+
+    <div class="compare-grid">
+      <!-- Column Headers -->
+      <div class="col-label-header">Line Item</div>
+      <div class="col-header pluxee-phys">
+        <span class="vendor-badge">Pluxee</span>
+        <span class="option-name">Physical Gift Cards</span>
+        <span class="quote-ref">Quotation 391040</span>
+      </div>
+      <div class="col-header pluxee-digital">
+        <span class="vendor-badge">Pluxee</span>
+        <span class="option-name">Digital eGift Credits</span>
+        <span class="quote-ref">Quotation 391044</span>
+      </div>
+      <div class="col-header giftaway">
+        <span class="vendor-badge">Giftaway</span>
+        <span class="option-name">eGift Credits</span>
+        <span class="quote-ref">Quote QU-45853</span>
+      </div>
+
+      <!-- Product Section -->
+      <div class="row-subhead" style="display:contents">
+        <div class="label-cell" style="background:#1A2E52;color:#8EC5FF;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;">Product / Gift Value</div>
+        <div class="val-cell" style="background:#00695C;color:rgba(255,255,255,0.8);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;justify-content:center;"></div>
+        <div class="val-cell" style="background:#0D47A1;color:rgba(255,255,255,0.8);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;justify-content:center;"></div>
+        <div class="val-cell" style="background:#BF360C;color:rgba(255,255,255,0.8);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;justify-content:center;"></div>
+      </div>
+
+      <div class="label-cell">Product Description</div>
+      <div class="val-cell phys-bg">Pluxee Gift (card)<br><span style="font-size:12px;color:#5A7A70;">200 pcs × PHP 100 = PHP 20,000<br>20 pcs × PHP 500 = PHP 10,000</span></div>
+      <div class="val-cell dig-bg">Pluxee Gift (credits)<br><span style="font-size:12px;color:#5A6B88;">30,000 credits × PHP 1.00</span></div>
+      <div class="val-cell gift-bg">eGift Card Credits<br><span style="font-size:12px;color:#7A5040;">30,000 credits × PHP 1.00</span></div>
+
+      <div class="label-cell">Gift / Product Value</div>
+      <div class="val-cell phys-bg" style="font-weight:700;">PHP 30,000.00</div>
+      <div class="val-cell dig-bg" style="font-weight:700;">PHP 30,000.00</div>
+      <div class="val-cell gift-bg" style="font-weight:700;">PHP 30,000.00</div>
+
+      <div class="label-cell">Tax on Gift Value</div>
+      <div class="val-cell phys-bg"><span class="tag tag-green">VAT Exempt · Not subject to EWT</span></div>
+      <div class="val-cell dig-bg"><span class="tag tag-green">VAT Exempt · Not subject to EWT</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">VAT Exempt · Not subject to EWT</span></div>
+
+      <!-- Fees Section -->
+      <div class="row-subhead" style="display:contents">
+        <div class="label-cell" style="background:#1A2E52;color:#8EC5FF;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;">Fees &amp; Charges</div>
+        <div class="val-cell" style="background:#00695C;color:rgba(255,255,255,0.8);font-size:11px;font-weight:700;text-transform:uppercase;justify-content:center;"></div>
+        <div class="val-cell" style="background:#0D47A1;color:rgba(255,255,255,0.8);font-size:11px;font-weight:700;text-transform:uppercase;justify-content:center;"></div>
+        <div class="val-cell" style="background:#BF360C;color:rgba(255,255,255,0.8);font-size:11px;font-weight:700;text-transform:uppercase;justify-content:center;"></div>
+      </div>
+
+      <div class="label-cell">Setup / Portal Fee</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">None</span><br><span style="font-size:11px;color:#5A7A70;">No platform setup required</span></div>
+      <div class="val-cell dig-bg" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <span style="font-weight:700;color:#0D47A1;font-size:14px;">PHP 8,000.00</span>
+        <span class="tag tag-blue" style="font-size:11px;">One-Time Portal Access Fee</span>
+        <span style="font-size:11px;color:#3A5A8A;line-height:1.4;">Portal remains fully accessible after this payment — no recurring fee.</span>
+      </div>
+      <div class="val-cell gift-bg" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <span class="tag tag-green">Currently WAIVED</span>
+        <span style="font-size:11px;color:#5A7A60;line-height:1.4;">Normally PHP 50,000 — waived at this time. Note: Giftaway may enforce this fee in future engagements.</span>
+      </div>
+
+      <div class="label-cell">Service Fee Rate</div>
+      <div class="val-cell phys-bg" style="font-weight:700;color:#00695C;">5.00%</div>
+      <div class="val-cell dig-bg" style="font-weight:700;color:#0D47A1;">5.00%</div>
+      <div class="val-cell gift-bg" style="font-weight:700;color:#BF360C;">10.00%</div>
+
+      <div class="label-cell">Service Fee Amount</div>
+      <div class="val-cell phys-bg">PHP 1,500.00</div>
+      <div class="val-cell dig-bg">PHP 1,500.00</div>
+      <div class="val-cell gift-bg">PHP 3,000.00</div>
+
+      <div class="label-cell">Delivery Fee</div>
+      <div class="val-cell phys-bg">PHP 714.29 <span style="font-size:11px;color:#5A7A70;">(Physical delivery)</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">None</span> <span style="font-size:11px;color:#5A6B88;">(digital distribution)</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">None</span> <span style="font-size:11px;color:#7A5040;">(digital distribution)</span></div>
+
+      <div class="label-cell">Total Fees (ex-VAT)</div>
+      <div class="val-cell phys-bg">PHP 2,214.29</div>
+      <div class="val-cell dig-bg" style="font-weight:700;color:#B71C1C;">PHP 9,500.00</div>
+      <div class="val-cell gift-bg">PHP 3,000.00</div>
+
+      <!-- Taxes Section -->
+      <div class="row-subhead" style="display:contents">
+        <div class="label-cell" style="background:#1A2E52;color:#8EC5FF;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;">Taxes</div>
+        <div class="val-cell" style="background:#00695C;justify-content:center;"></div>
+        <div class="val-cell" style="background:#0D47A1;justify-content:center;"></div>
+        <div class="val-cell" style="background:#BF360C;justify-content:center;"></div>
+      </div>
+
+      <div class="label-cell">VAT (12%) on Fees</div>
+      <div class="val-cell phys-bg">PHP 265.71</div>
+      <div class="val-cell dig-bg" style="font-weight:700;color:#B71C1C;">PHP 1,140.00</div>
+      <div class="val-cell gift-bg">PHP 360.00</div>
+
+      <div class="label-cell">EWT</div>
+      <div class="val-cell phys-bg">PHP 0.00</div>
+      <div class="val-cell dig-bg">PHP 0.00</div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">Not applicable</span></div>
+
+      <div class="label-cell">Total Fees (inc. VAT)</div>
+      <div class="val-cell phys-bg" style="font-weight:700;">PHP 2,480.00</div>
+      <div class="val-cell dig-bg" style="font-weight:700;color:#B71C1C;">PHP 10,640.00</div>
+      <div class="val-cell gift-bg" style="font-weight:700;">PHP 3,360.00</div>
+
+      <!-- Total Row -->
+      <div class="label-cell" style="background:#1A2E52;color:#fff;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:0.4px;border-top:2px solid #0D2050;">TOTAL AMOUNT DUE</div>
+      <div class="total-amount phys">
+        <span class="amount-label">Pluxee Physical</span>
+        PHP 32,480.00
+      </div>
+      <div class="total-amount dig">
+        <span class="amount-label">Pluxee Digital</span>
+        PHP 40,640.00
+      </div>
+      <div class="total-amount gift">
+        <span class="amount-label">Giftaway eGift</span>
+        PHP 33,360.00
+      </div>
+
+      <!-- Verdict Row -->
+      <div class="label-cell" style="background:#F5F7FA;font-size:12px;font-weight:700;color:#3A4D6B;text-transform:uppercase;letter-spacing:0.4px;border-top:1px solid #E8EDF5;">Verdict</div>
+      <div class="verdict-cell phys-bg">
+        <span class="verdict-pill verdict-best">✔ Lowest Cost Overall</span>
+        <span style="font-size:11px;color:#5A7A70;margin-top:4px;">Saves PHP 880 vs. Giftaway</span>
+      </div>
+      <div class="verdict-cell dig-bg">
+        <span class="verdict-pill verdict-mid">Portal Access Included</span>
+        <span style="font-size:11px;color:#3A4D6B;margin-top:4px;">One-time fee · portal accessible thereafter</span>
+      </div>
+      <div class="verdict-cell gift-bg">
+        <span class="verdict-pill verdict-mid">✔ Best Digital Value</span>
+        <span style="font-size:11px;color:#7A5040;margin-top:4px;">Instant release, API enabled</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 4: FEATURES COMPARISON ════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="num">4</span> Features &amp; Platform</div>
+
+    <div class="compare-grid">
+      <div class="col-label-header">Feature</div>
+      <div class="col-header pluxee-phys">
+        <span class="vendor-badge">Pluxee</span>
+        <span class="option-name">Physical Gift Cards</span>
+      </div>
+      <div class="col-header pluxee-digital">
+        <span class="vendor-badge">Pluxee</span>
+        <span class="option-name">Digital eGift Credits</span>
+      </div>
+      <div class="col-header giftaway">
+        <span class="vendor-badge">Giftaway</span>
+        <span class="option-name">eGift Credits</span>
+      </div>
+
+      <div class="label-cell">Delivery Format</div>
+      <div class="val-cell phys-bg"><span class="tag tag-teal">Physical card</span></div>
+      <div class="val-cell dig-bg"><span class="tag tag-blue">Digital credits via portal</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-amber">Email or mobile number</span></div>
+
+      <div class="label-cell">Lead Time</div>
+      <div class="val-cell phys-bg">3–5 calendar days</div>
+      <div class="val-cell dig-bg">3–5 calendar days</div>
+      <div class="val-cell gift-bg" style="font-weight:600;color:#1B5E20;">Immediate upon payment</div>
+
+      <div class="label-cell">Online Dashboard</div>
+      <div class="val-cell phys-bg"><span class="tag tag-teal">Yes — Pluxee portal</span></div>
+      <div class="val-cell dig-bg"><span class="tag tag-blue">Yes — Pluxee portal</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">Yes — web dashboard</span></div>
+
+      <div class="label-cell">API Integration</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not mentioned</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not mentioned</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">✔ Available</span></div>
+
+      <div class="label-cell">Bulk File Upload</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not mentioned</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not mentioned</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">✔ Available</span></div>
+
+      <div class="label-cell">eGift / Credit Validity</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">365 days once converted</span></div>
+
+      <div class="label-cell">Merchant Locator</div>
+      <div class="val-cell phys-bg">merchantlocator.pluxee.ph.com</div>
+      <div class="val-cell dig-bg">merchantlocator.pluxee.ph.com</div>
+      <div class="val-cell gift-bg">Multiple e-voucher brands via Giftaway platform</div>
+
+      <div class="label-cell">Account Inactivity</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell gift-bg">Deactivated after 3 months of no access; credits &amp; data nullified</div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 5: TERMS & CONDITIONS ═════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="num">5</span> Terms &amp; Conditions</div>
+
+    <div class="compare-grid">
+      <div class="col-label-header">Term</div>
+      <div class="col-header pluxee-phys">
+        <span class="vendor-badge">Pluxee</span>
+        <span class="option-name">Physical Gift Cards</span>
+      </div>
+      <div class="col-header pluxee-digital">
+        <span class="vendor-badge">Pluxee</span>
+        <span class="option-name">Digital eGift Credits</span>
+      </div>
+      <div class="col-header giftaway">
+        <span class="vendor-badge">Giftaway</span>
+        <span class="option-name">eGift Credits</span>
+      </div>
+
+      <div class="label-cell">Agreement Term</div>
+      <div class="val-cell phys-bg">Valid 1 year from date signed</div>
+      <div class="val-cell dig-bg">Valid 1 year from date signed</div>
+      <div class="val-cell gift-bg" style="font-weight:600;">36 months; auto-renewed for 36 months</div>
+
+      <div class="label-cell">Payment Terms</div>
+      <div class="val-cell phys-bg">COD — Check payment</div>
+      <div class="val-cell dig-bg">COD — Check payment</div>
+      <div class="val-cell gift-bg">Credits released upon receipt of payment</div>
+
+      <div class="label-cell">Accepted Payment Methods</div>
+      <div class="val-cell phys-bg">Check (BDO / Citibank / BPI)</div>
+      <div class="val-cell dig-bg">Check (BDO / Citibank / BPI)</div>
+      <div class="val-cell gift-bg">Bank deposit/transfer (BDO)<br><span style="font-size:11px;color:#7A5040;">Email confirmation to finance@giftaway.ph</span></div>
+
+      <div class="label-cell">Late Payment Penalty</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-amber">3% monthly interest on unpaid balance</span></div>
+
+      <div class="label-cell">Cancellation Policy</div>
+      <div class="val-cell phys-bg">Subject to fees; PHP 5.00/voucher cancellation fee;<br>Orders not paid or picked up within 2 weeks → cancellation</div>
+      <div class="val-cell dig-bg">Subject to fees; PHP 5.00/voucher cancellation fee;<br>Orders not paid or picked up within 2 weeks → cancellation</div>
+      <div class="val-cell gift-bg">Amendments require written consent from both parties</div>
+
+      <div class="label-cell">VAT on Gift Value</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">VAT Exempt (per BIR ruling)</span></div>
+
+      <div class="label-cell">EWT on Gift Value</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">Not subject to EWT</span></div>
+
+      <div class="label-cell">Input Tax Claim</div>
+      <div class="val-cell phys-bg"><span class="tag tag-red">NOT valid for input tax claim</span></div>
+      <div class="val-cell dig-bg"><span class="tag tag-red">NOT valid for input tax claim</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">BIR-issued receipts provided</span></div>
+
+      <div class="label-cell">Setup / Portal Fee</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">None</span></div>
+      <div class="val-cell dig-bg" style="flex-direction:column;align-items:flex-start;gap:3px;">
+        <span style="font-weight:700;color:#0D47A1;">PHP 8,000.00</span>
+        <span class="tag tag-blue" style="font-size:11px;">One-Time Portal Access Fee</span>
+        <span style="font-size:11px;color:#3A5A8A;">Portal remains accessible after payment — no recurring fee.</span>
+      </div>
+      <div class="val-cell gift-bg" style="flex-direction:column;align-items:flex-start;gap:3px;">
+        <span class="tag tag-green">Currently WAIVED</span>
+        <span style="font-size:11px;color:#5A7A60;">Normally PHP 50,000. Note: Giftaway may enforce this fee in future engagements.</span>
+      </div>
+
+      <div class="label-cell">Data Privacy</div>
+      <div class="val-cell phys-bg">Client accepts DPP upon signing;<br>policy at pluxee.ph/terms-order-process</div>
+      <div class="val-cell dig-bg">Client accepts DPP upon signing;<br>policy at pluxee.ph/terms-order-process</div>
+      <div class="val-cell gift-bg">Full DPA 2012 (RA 10173) compliance;<br>24-hour breach notification;<br>Personal data deleted upon termination</div>
+
+      <div class="label-cell">Governing Law / Dispute</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified in quotation</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified in quotation</span></div>
+      <div class="val-cell gift-bg">Philippine law; arbitration via PDRCI, Metro Manila</div>
+
+      <div class="label-cell">Force Majeure</div>
+      <div class="val-cell phys-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell dig-bg"><span class="tag" style="background:#F0F0F0;color:#777;">Not specified</span></div>
+      <div class="val-cell gift-bg"><span class="tag tag-green">Included in agreement</span></div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 6: KEY INSIGHTS ═══════════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="num">6</span> Key Insights &amp; Decision Factors</div>
+
+    <div class="insights-grid">
+
+      <div class="insight-card">
+        <div class="ic-head">
+          <div class="ic-icon" style="background:#E8F5E9;">💰</div>
+          Cost
+        </div>
+        <p><strong>Pluxee Physical (PHP 32,480)</strong> is the cheapest option, saving PHP 880 over Giftaway. <strong>Pluxee Digital (PHP 40,640)</strong> has a higher upfront cost due to the PHP 8,000 one-time Portal Access Fee — once paid, the portal remains fully accessible at no additional recurring cost. <strong>Giftaway (PHP 33,360)</strong> offers the best value for digital-only distribution, with its PHP 50,000 setup fee currently waived (may be enforced in future).</p>
+      </div>
+
+      <div class="insight-card">
+        <div class="ic-head">
+          <div class="ic-icon" style="background:#E3F2FD;">⚡</div>
+          Delivery Speed
+        </div>
+        <p><strong>Giftaway</strong> is the fastest — credits are released <strong>immediately upon payment</strong> with digital delivery to email or mobile. Both Pluxee options require <strong>3–5 calendar days</strong> lead time.</p>
+      </div>
+
+      <div class="insight-card">
+        <div class="ic-head">
+          <div class="ic-icon" style="background:#FFF3E0;">⚙️</div>
+          Technology
+        </div>
+        <p><strong>Giftaway</strong> offers the most advanced platform features: <strong>API integration, bulk file upload, and web dashboard</strong>. Neither Pluxee option mentions API or bulk upload capabilities in the submitted documents.</p>
+      </div>
+
+      <div class="insight-card">
+        <div class="ic-head">
+          <div class="ic-icon" style="background:#F3E5F5;">📋</div>
+          Agreement Protection
+        </div>
+        <p><strong>Giftaway</strong> provides a comprehensive 36-month Enterprise Agreement with explicit clauses for data privacy, late payment, force majeure, and dispute resolution. Pluxee quotations are transactional with limited long-term terms.</p>
+      </div>
+
+      <div class="insight-card">
+        <div class="ic-head">
+          <div class="ic-icon" style="background:#E0F2F1;">🏷️</div>
+          Tax Treatment
+        </div>
+        <p><strong>Giftaway</strong> credits are <strong>VAT Exempt and not subject to EWT</strong> per BIR ruling — a significant compliance advantage. Pluxee quotations do not address VAT exemption on the gift value. Note: Pluxee documents are <em>not valid for input tax claims</em>.</p>
+      </div>
+
+      <div class="insight-card">
+        <div class="ic-head">
+          <div class="ic-icon" style="background:#FCE4EC;">🎁</div>
+          Credit Validity
+        </div>
+        <p><strong>Giftaway</strong> eGifts are valid for <strong>365 days</strong> once converted. Pluxee does not specify credit or card validity periods in the submitted documents.</p>
+      </div>
+
+    </div>
+
+    <div class="disclaimer">
+      <strong>Disclaimer:</strong> This report is based solely on the documents provided — Giftaway Quote QU-45853, Giftaway Enterprise Agreement, and Pluxee Quotations 391040 &amp; 391044 (all dated May 5, 2026). All figures are sourced directly from these documents without modification. Final procurement decisions should consider additional factors such as merchant network coverage, recipient preferences, volume scalability, and organizational policies.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
